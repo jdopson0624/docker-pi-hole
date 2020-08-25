@@ -53,6 +53,15 @@ ARG MAINTAINER
 LABEL maintainer="${MAINTAINER}"
 LABEL url="https://www.github.com/pi-hole/docker-pi-hole"
 
+# needed for Sublist3r
+RUN apt update && apt install -y python3 python3-pip python-argparse python3-dns python3-requests unzip wget && ln -s /usr/bin/python3 /usr/bin/python && ln -s /usr/bin/pip3 /usr/bin/pip && pip install dnspython && rm -rf /var/cache/apt/archives /var/lib/apt/lists/*
+
+# Sublist3r
+RUN mkdir /etc/sublist/ && cd /etc/sublist/ && wget https://github.com/aboul3la/Sublist3r/archive/master.zip && unzip -o master.zip
+
+COPY youtube-ads.sh /usr/local/bin/
+COPY ./youtube-ads.cron /etc/cron.d/
+
 HEALTHCHECK CMD dig +norecurse +retry=0 @127.0.0.1 pi.hole || exit 1
 
 SHELL ["/bin/bash", "-c"]

@@ -1,0 +1,2 @@
+# Update youtube adblock list
+30 * 	* * * 	root	PATH="$PATH:/usr/local/bin/" docker exec $DOCKER_NAME /usr/local/bin/youtube-ads.sh > /dev/null
